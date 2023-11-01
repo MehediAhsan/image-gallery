@@ -55,22 +55,24 @@ const image = [
 
 const Home = () => {
   const [images, setImages] = useState(image);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImages, setSelectedImages] = useState([]);
 
   const handleImageClick = (id) => {
-    // Set the selected image
-    setSelectedImage(id);
+    // Toggle selection for the clicked image
+    setSelectedImages((prevSelectedImages) => {
+      if (prevSelectedImages.includes(id)) {
+        return prevSelectedImages.filter((imageId) => imageId !== id);
+      } else {
+        return [...prevSelectedImages, id];
+      }
+    });
   };
 
-  const handleDeleteSelectedImage = () => {
-    if (selectedImage !== null) {
-      // Delete the selected image
-      const remainingImages= images.filter((image) => image.id !== selectedImage)
-      setImages(remainingImages);
-    
-      // Clear selected image
-      setSelectedImage(null);
-    }
+  const handleDeleteSelectedImages = () => {
+    // Delete selected images
+    setImages((prevImages) => prevImages.filter((image) => !selectedImages.includes(image.id)));
+    // Clear selected images
+    setSelectedImages([]);
   };
 
   return (
@@ -80,37 +82,35 @@ const Home = () => {
         <h1 className="text-2xl font-bold">Gallery</h1>
         <p
           className="text-xl text-red-500 font-semibold cursor-pointer hover:border-b-2 hover:border-red-500"
-          onClick={handleDeleteSelectedImage}
-          disabled={selectedImage === null}
+          onClick={handleDeleteSelectedImages}
+          disabled={selectedImages.length === 0}
         >
           Delate Files
         </p>
       </div>
       {/* Gallery */}
       <div className="container mx-auto p-8">
-        <div className="grid grid-cols-5 gap-4">
-          {images.map((image) => (
-            <div
-              key={image.id}
-              className={`relative overflow-hidden border rounded cursor-pointer ${
-                selectedImage === image.id ? "ring-4 ring-blue-500" : ""
-              }`}
-              onClick={() => handleImageClick(image.id)}
-            >
-              {selectedImage === image.id && (
-                <div className="absolute top-2 left-2 text-green-500 text-2xl font-bold">
-                  &#10003;
-                </div>
-              )}
-              <img
-                className="w-full h-auto"
-                src={image.picture}
-                alt={`Image ${image.id}`}
-              />
-            </div>
-          ))}
-        </div>
+      <div className="grid grid-cols-5 gap-4">
+        {images.map((image, index) => (
+          <div
+            key={image.id}
+            className={`relative overflow-hidden border rounded cursor-pointer ${
+              selectedImages.includes(image.id) ? 'ring-4 ring-blue-500' : ''
+            }`}
+            style={{
+                gridColumn: index === 0 ? 'span 2' : 'span 1', // First image spans 2 columns
+                gridRow: index === 0 ? 'span 2' : 'span 1', // First image spans 2 rows
+              }}
+            onClick={() => handleImageClick(image.id)}
+          >
+            {selectedImages.includes(image.id) && (
+              <div className="absolute top-2 left-2 text-green-500 text-2xl font-bold">&#10003;</div>
+            )}
+            <img className="w-full h-auto" src={image.picture} alt={`Image ${image.id}`} />
+          </div>
+        ))}
       </div>
+    </div>
     </div>
   );
 };
