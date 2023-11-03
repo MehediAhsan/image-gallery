@@ -98,22 +98,24 @@ const Home = () => {
   };
 
   return (
-    <div className="shadow container mx-auto my-20">
+    <div className="shadow container mx-auto my-14">
       {/* header section */}
       <div className="flex justify-between p-6 border-b-2">
         <h1 className="text-2xl font-bold">Gallery</h1>
-        <p
+        {
+          selectedImages.length === 0 ? '': <p
           className="text-xl text-red-500 font-semibold cursor-pointer hover:border-b-2 hover:border-red-500"
           onClick={() => handleDeleteSelectedImages(selectedImages)}
           disabled={selectedImages.length === 0}
         >
           Delete Files
         </p>
+        }
       </div>
       {/* Gallery */}
       <div className="container mx-auto p-8">
         <div className="grid grid-cols-5 gap-4">
-          {images.map((image) => (
+          {images.map((image,index) => (
             <div
               key={image.id}
               className={`relative overflow-hidden border rounded cursor-pointer ${
@@ -122,14 +124,21 @@ const Home = () => {
               onMouseEnter={() => handleImageHover(image.id)}
               onMouseLeave={() => handleImageHover(null)}
               onClick={() => handleImageClick(image.id)}
+              style={{
+                gridColumn: index === 0 ? 'span 2' : 'span 1', // First image spans 2 columns
+                gridRow: index === 0 ? 'span 2' : 'span 1', // First image spans 2 rows
+              }}
             >
-              <div className="absolute top-3 left-3 text-2xl">
+              <div className="absolute top-3 left-3 text-2xl z-20">
                 {selectedImages.includes(image.id) ? (
                   <input type="checkbox" checked className="checked:bg-blue-500" />
                 ) : (
                   <input type="checkbox" className={`${hoveredImage === image.id ? 'block':'hidden'} checked:bg-blue-500`} />
                 )}
               </div>
+              {
+                hoveredImage === image.id && hoveredImage === image.id && <div className="absolute bg-black opacity-40 inset-0 z-10"></div>
+              }
               <img className="w-full h-auto" src={image.picture} alt={`Image ${image.id}`} />
             </div>
           ))}
