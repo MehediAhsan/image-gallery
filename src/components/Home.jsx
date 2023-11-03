@@ -115,7 +115,7 @@ const Home = () => {
 
 
   return (
-    <div className="shadow-md shadow-gray-400 container mx-auto my-14">
+    <div className="shadow-md shadow-gray-400 container mx-auto my-14 px-4 md:px-0">
       {/* header section */}
       <div className="flex justify-between p-6 border-b-2">
         <h1 className="text-2xl font-bold">
@@ -136,8 +136,8 @@ const Home = () => {
         }
       </div>
       {/* Gallery */}
-      <div className="container mx-auto p-8">
-        <div className="grid grid-cols-5 gap-4">
+      <div className="container mx-auto p-4 md:p-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           {images.map((image,index) => (
             <div
               key={image.id}
@@ -165,7 +165,7 @@ const Home = () => {
               <img className="w-full h-auto border border-gray-400 hover:border-0" src={image.picture} alt={`Image ${image.id}`} />
             </div>
           ))}
-          <div className="relative overflow-hidden rounded border-dashed border-2 cursor-pointer flex items-center justify-center text-gray-600 text-xl font-semibold border-gray-600">
+          <div className="relative overflow-hidden rounded border-dashed border-2 cursor-pointer flex items-center justify-center text-gray-600 text-xl font-semibold border-gray-600 col-span-1 h-96 w-96 md:h-auto md:w-auto">
             <label htmlFor="upload" className="cursor-pointer">
               <input
                 type="file"
