@@ -97,8 +97,25 @@ const Home = () => {
     setSelectedImages([]);
   };
 
+  const handleNewImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const newImage = {
+          id: images.length + 1, // Generate a new unique ID for the image
+          picture: reader.result, // Set the picture data as the base64 representation of the uploaded image
+          isFeatured: false,
+        };
+        setImages((prevImages) => [...prevImages, newImage]);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+
   return (
-    <div className="shadow container mx-auto my-14">
+    <div className="shadow-md shadow-gray-400 container mx-auto my-14">
       {/* header section */}
       <div className="flex justify-between p-6 border-b-2">
         <h1 className="text-2xl font-bold">
@@ -148,6 +165,18 @@ const Home = () => {
               <img className="w-full h-auto border border-gray-400 hover:border-0" src={image.picture} alt={`Image ${image.id}`} />
             </div>
           ))}
+          <div className="relative overflow-hidden rounded border-dashed border-2 cursor-pointer flex items-center justify-center text-gray-600 text-xl font-semibold border-gray-600">
+            <label htmlFor="upload" className="cursor-pointer">
+              <input
+                type="file"
+                id="upload"
+                className="hidden"
+                accept="image/*"
+                onChange={(e) => handleNewImageUpload(e)}
+              />
+              <span>+</span> Add Image
+            </label>
+          </div>
         </div>
       </div>
     </div>
