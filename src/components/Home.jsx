@@ -101,7 +101,13 @@ const Home = () => {
     <div className="shadow container mx-auto my-14">
       {/* header section */}
       <div className="flex justify-between p-6 border-b-2">
-        <h1 className="text-2xl font-bold">Gallery</h1>
+        <h1 className="text-2xl font-bold">
+          {
+            selectedImages.length === 0 ? 'Gallery': <>
+            <input type="checkbox" checked className="checked:bg-blue-500 w-5 h-5 mr-2" /> {selectedImages.length} File Selected
+            </>
+          }
+        </h1>
         {
           selectedImages.length === 0 ? '': <p
           className="text-xl text-red-500 font-semibold cursor-pointer hover:border-b-2 hover:border-red-500"
@@ -118,8 +124,8 @@ const Home = () => {
           {images.map((image,index) => (
             <div
               key={image.id}
-              className={`relative overflow-hidden border rounded cursor-pointer ${
-                selectedImages.includes(image.id) ? 'ring-4 ring-blue-500' : ''
+              className={`relative overflow-hidden rounded cursor-pointer ${
+                selectedImages.includes(image.id) ? 'ring-2 ring-blue-500' : ''
               } ${hoveredImage === image.id ? 'border-yellow-400' : ''}`}
               onMouseEnter={() => handleImageHover(image.id)}
               onMouseLeave={() => handleImageHover(null)}
@@ -131,15 +137,15 @@ const Home = () => {
             >
               <div className="absolute top-3 left-3 text-2xl z-20">
                 {selectedImages.includes(image.id) ? (
-                  <input type="checkbox" checked className="checked:bg-blue-500" />
+                  <input type="checkbox" checked className="checked:bg-blue-500 w-5 h-5" />
                 ) : (
-                  <input type="checkbox" className={`${hoveredImage === image.id ? 'block':'hidden'} checked:bg-blue-500`} />
+                  <input type="checkbox" className={`${hoveredImage === image.id ? 'block':'hidden'} checked:bg-blue-500 w-5 h-5`} />
                 )}
               </div>
               {
                 hoveredImage === image.id && hoveredImage === image.id && <div className="absolute bg-black opacity-40 inset-0 z-10"></div>
               }
-              <img className="w-full h-auto" src={image.picture} alt={`Image ${image.id}`} />
+              <img className="w-full h-auto border border-gray-400 hover:border-0" src={image.picture} alt={`Image ${image.id}`} />
             </div>
           ))}
         </div>
