@@ -74,6 +74,9 @@ const Home = () => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [hoveredImage, setHoveredImage] = useState(null);
 
+  const [dragItem, setDragItem] = useState(null)
+  const [dragOverItem, setDragOverItem] =useState(null)
+
   const handleImageClick = (id) => {
     // Toggle selection for the clicked image
     setSelectedImages((prevSelectedImages) => {
@@ -113,6 +116,13 @@ const Home = () => {
     }
   };
 
+  const swapArray = () => {
+    let newImages = [...images]
+    const dragImage = newImages.splice(dragItem,1)[0]
+    newImages.splice(dragOverItem,0,dragImage)
+    setImages(newImages)
+  }
+
 
   return (
     <div className="shadow-md shadow-gray-400 container mx-auto my-14 px-4 md:px-0">
@@ -151,6 +161,10 @@ const Home = () => {
                 gridColumn: index === 0 ? 'span 2' : 'span 1', // First image spans 2 columns
                 gridRow: index === 0 ? 'span 2' : 'span 1', // First image spans 2 rows
               }}
+              onDragStart={() => setDragItem(index)}
+              onDragEnter={() => setDragOverItem(index)}
+              onDragEnd={swapArray}
+              draggable
             >
               <div className="absolute top-3 left-3 text-2xl z-20">
                 {selectedImages.includes(image.id) ? (
